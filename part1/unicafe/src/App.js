@@ -6,16 +6,25 @@ const Statistics = ({ good, neutral, bad }) => {
   
   let all = good + neutral + bad
 
+  if (all > 0) {
+    return (
+      <>
+        good {good} <br/>
+        neutral {neutral} <br/>
+        bad {bad} <br/>
+        all {all} <br/>
+        average {(good - bad) / all} <br/>
+        positive {(good / all) * 100} %
+      </>
+    )
+  }
+
   return (
-    <>
-      good {good} <br/>
-      neutral {neutral} <br/>
-      bad {bad} <br/>
-      all {all} <br/>
-      average {(good - bad) / all} <br/>
-      positive {(good / all) * 100} %
-    </>
+    <div>
+      No feedback given
+    </div>
   )
+  
 }
 
 const App = () => {
