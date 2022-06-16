@@ -3,12 +3,8 @@ const Header = ({ course }) => <h1> {course.name} </h1>
 const Part = ({ cor }) => <p> {cor.name} {cor.exercises} </p>
 
 const Content = ({ course }) => {
-  
-  let totalSum = 0;
 
-  for (let i in course.parts) {
-    totalSum += course.parts[i].exercises;
-  }
+  const total = course.parts.reduce((s, p) => s + p.exercises, 0)
 
   return (
     <div>
@@ -16,7 +12,7 @@ const Content = ({ course }) => {
         <Part key={cor.id} cor={cor} />
       )}
       <p>
-        <b> total of {totalSum} exercises </b>
+        <b> total of {total} exercises </b>
       </p>
     </div>
   )
