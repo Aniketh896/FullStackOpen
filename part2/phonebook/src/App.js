@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
@@ -13,28 +12,44 @@ const App = () => {
 
   useEffect(() => {
     personsService
-    .getAll()   
+    .get()   
     .then(initialPersons => setPersons(initialPersons))  
   }, [])
 
+  const reset = () => {
+    setNewName('')
+    setNewNumber('')
+    setNewFilter('')
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
-    const found = persons.find(obj => obj.name === newName)
+    const foundPerson = persons.find(person => person.name === newName)
 
-    if (found !== undefined) {
-      alert(`${newName} is already added to phonebook`)
+    if (foundPerson !== undefined) {
+      if (window.confirm(`${foundPerson.name} is already added to phonebook, replace the old number with a new one ?`)) {
+
+        const changedPerson = { ...foundPerson, number: newNumber }
+
+        personsService
+          .update(foundPerson.id, changedPerson)
+          .then(returnedNote => {
+            setPersons(persons.map(person => 
+              person.id !== foundPerson.id ? person : returnedNote)) 
+          })
+        
+        reset()
+      }
     } 
     else if (newName !== '') {
       const nameObject = { name: newName, number: newNumber}
       personsService
         .create(nameObject)
         .then(returnedPersons => {
-          setPersons(persons.concat(returnedPersons))    
+          setPersons(persons.concat(returnedPersons))
+          reset()
         })
     }
-    setNewName('')
-    setNewNumber('')
-    setNewFilter('')
   }
 
   const handleDeleteOf = (id) => {
