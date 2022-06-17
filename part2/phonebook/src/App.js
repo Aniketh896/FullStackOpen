@@ -37,6 +37,22 @@ const App = () => {
     setNewFilter('')
   }
 
+  const handleDeleteOf = (id) => {
+
+    const personFound = persons.find(person => person.id === id)
+
+    if (window.confirm(`Delete ${personFound.name} ?`)) {
+      personsService
+        .deletePerson(id)
+        .then(() => {
+          setPersons((persons.filter(person => person.id !== id)))
+          setNewName('')
+          setNewNumber('')
+          setNewFilter('')   
+        })
+    }
+  }
+
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
   const handleFilterChange = (event) => setNewFilter(event.target.value)
@@ -67,7 +83,10 @@ const App = () => {
       <h3>Numbers</h3>
 
       {personsToShow.map((person) =>
-        <Persons key={person.id} person={person} />
+        <Persons 
+          key={person.id} 
+          person={person} 
+          handleDelete={() => handleDeleteOf(person.id)}/>
       )}
     </div>
   )
