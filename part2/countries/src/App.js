@@ -1,7 +1,46 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const Country = ({ country }) => <> <br />{country.name.common} </>
+const CountryView = ({ country }) => {
+  return (
+    <div>
+      <h2>{country.name.common}</h2>
+      capital {country.capital} <br />
+      area {country.area}
+      <h3>languages:</h3>
+      <ul>
+        {Object.entries(country.languages).map(lang => 
+          <li key={lang[0]}> {lang[1]} </li>
+        )}
+      </ul>
+      <img src={country.flags.png} alt={`${country.name.common} Flag`} style={{maxWidth: 150}}/>
+    </div>
+  )
+}
+
+const Country = ({ country }) => {
+
+  const [showView, setView] = useState(false)
+
+  const handleShowClick = () => {
+    setView(!showView)
+  }
+
+  if (showView) {
+    return (
+      <> 
+        <CountryView country={country}/>
+      </>
+    )
+  } else {
+    return (
+      <> 
+        <br />{country.name.common} <button onClick={handleShowClick}> show </button>
+      </>
+    )
+  }
+  
+}
 
 const Countries = ({ countries }) => {
 
@@ -23,18 +62,7 @@ const Countries = ({ countries }) => {
   } else if (countries.length === 1 ) {
     const country = countries[0]
     return (
-      <div>
-        <h2>{country.name.common}</h2>
-        capital {country.capital} <br />
-        area {country.area}
-        <h3>languages:</h3>
-        <ul>
-          {Object.entries(country.languages).map(lang => 
-            <li key={lang[0]}> {lang[1]} </li>
-          )}
-        </ul>
-        <img src={country.flags.png} alt={`${country.name.common} Flag`} style={{maxWidth: 150}}/>
-      </div>
+      <CountryView country={country}/>
     )
   }
 }
