@@ -2,6 +2,16 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 const CountryView = ({ country }) => {
+
+  const api_key = process.env.REACT_APP_API_KEY
+  const [weather, setWeather] = useState({main: {temp: 0}, weather:[{icon: ''}], wind: {speed: 0}})
+
+  useEffect(() => {
+    axios
+    .get(`https://api.openweathermap.org/data/2.5/weather?q=${country.capital}&units=metric&appid=${api_key}`)      
+    .then(response => setWeather(response.data))
+  }, [api_key, country.capital])
+
   return (
     <div>
       <h2>{country.name.common}</h2>
@@ -13,10 +23,23 @@ const CountryView = ({ country }) => {
           <li key={lang[0]}> {lang[1]} </li>
         )}
       </ul>
-      <img src={country.flags.png} alt={`${country.name.common} Flag`} style={{maxWidth: 150}}/>
+      <img 
+        src={country.flags.png} 
+        alt={`${country.name.common} Flag`} 
+        style={{maxWidth: 150}}/> <br />
+      <h2>{`Weather in ${country.capital}`}</h2>
+      {console.log(weather)}
+      {`temperature ${weather.main.temp} Celcius`} <br />
+      <img 
+        src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} 
+        alt={`${country.capital} Weather Icon`} 
+        style={{maxWidth: 150}}/> <br />
+      {`wind ${weather.wind.speed} m/s`}
+
     </div>
   )
 }
+
 
 const Country = ({ country }) => {
 
@@ -41,6 +64,7 @@ const Country = ({ country }) => {
   }
   
 }
+
 
 const Countries = ({ countries }) => {
 
@@ -67,6 +91,7 @@ const Countries = ({ countries }) => {
   }
 }
 
+
 const App = () => {
 
   const [countries, setCountries] = useState([])
@@ -80,14 +105,13 @@ const App = () => {
 
   const handleFilterChange = (event) => setNewFilter(event.target.value)
 
-  const countriesToShow = countries.filter(country => country.name.common.toLowerCase().includes(newFilter.toLowerCase()))
-
+  const countriesToShow = countries.filter(country =>
+                            country.name.common.toLowerCase().includes(newFilter.toLowerCase()))
 
   return (
     <div>
       find countries <input value={newFilter} onChange={handleFilterChange} />
       <Countries countries={countriesToShow} />
-
     </div>
   )
 }
