@@ -16,7 +16,7 @@ const App = () => {
     .then(initialPersons => setPersons(initialPersons))  
   }, [])
 
-  const reset = () => {
+  const resetAllFields = () => {
     setNewName('')
     setNewNumber('')
     setNewFilter('')
@@ -34,11 +34,9 @@ const App = () => {
         personsService
           .update(foundPerson.id, changedPerson)
           .then(returnedNote => {
-            setPersons(persons.map(person => 
-              person.id !== foundPerson.id ? person : returnedNote)) 
+            setPersons(persons.map(person => person.id !== foundPerson.id ? person : returnedNote)) 
+            resetAllFields()
           })
-        
-        reset()
       }
     } 
     else if (newName !== '') {
@@ -47,7 +45,7 @@ const App = () => {
         .create(nameObject)
         .then(returnedPersons => {
           setPersons(persons.concat(returnedPersons))
-          reset()
+          resetAllFields()
         })
     }
   }
@@ -61,9 +59,7 @@ const App = () => {
         .deletePerson(id)
         .then(() => {
           setPersons((persons.filter(person => person.id !== id)))
-          setNewName('')
-          setNewNumber('')
-          setNewFilter('')   
+          resetAllFields()
         })
     }
   }
