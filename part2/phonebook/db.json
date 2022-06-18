@@ -6,34 +6,19 @@
       "id": 1
     },
     {
+      "name": "Ada Lovelace",
+      "number": "39-44-5323523",
+      "id": 2
+    },
+    {
+      "name": "Dan Abramov",
+      "number": "12-43-234345",
+      "id": 3
+    },
+    {
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": 4
-    },
-    {
-      "name": "Aniketh Hotagi",
-      "number": "8962857478",
-      "id": 5
-    },
-    {
-      "name": "Veena Hotagi",
-      "number": "9893632017",
-      "id": 6
-    },
-    {
-      "name": "sdsds",
-      "number": "12345",
-      "id": 7
-    },
-    {
-      "name": "Vishwanath Hotagi",
-      "number": "9425443265",
-      "id": 8
-    },
-    {
-      "name": "A",
-      "number": "99",
-      "id": 9
     }
   ]
 }

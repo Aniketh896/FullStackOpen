@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import ConfirmNotification from './components/ConfirmNotification'
+import ErrorNotification from './components/ErrorNotification'
 import personsService from './services/persons'
 
 
@@ -12,6 +13,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [confirmMessage, setConfirmMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personsService
@@ -38,8 +40,15 @@ const App = () => {
           .update(foundPerson.id, changedPerson)
           .then(returnedNote => {
             setPersons(persons.map(person => person.id !== foundPerson.id ? person : returnedNote)) 
-            resetAllFields()
           })
+          .catch(error => {      
+            setErrorMessage(`Information of ${newName} has already been emoved from the server`)
+            setTimeout(() => {          
+            setErrorMessage(null)
+          }, 5000)
+          setPersons(persons.filter(person => person.id !== foundPerson.id))    
+          })
+          resetAllFields()
       }
     } 
     else if (newName !== '') {
@@ -83,7 +92,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <ConfirmNotification message={confirmMessage} />
+      <ConfirmNotification message={confirmMessage}/>
+      <ErrorNotification message={errorMessage}/>
 
       <Filter 
         newFilter={newFilter}
