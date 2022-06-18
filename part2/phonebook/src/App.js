@@ -4,11 +4,35 @@ import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import personsService from './services/persons'
 
+const ConfirmNotification = ({ message }) => {
+
+  const confirmStyle = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div style={confirmStyle}>
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [confirmMessage, setConfirmMessage] = useState(null)
 
   useEffect(() => {
     personsService
@@ -45,6 +69,10 @@ const App = () => {
         .create(nameObject)
         .then(returnedPersons => {
           setPersons(persons.concat(returnedPersons))
+          setConfirmMessage(`Added ${newName}`)
+          setTimeout(() => {          
+            setConfirmMessage(null)
+          }, 5000)       
           resetAllFields()
         })
     }
@@ -75,6 +103,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <ConfirmNotification message={confirmMessage} />
 
       <Filter 
         newFilter={newFilter}
