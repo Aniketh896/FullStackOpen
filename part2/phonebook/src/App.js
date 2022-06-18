@@ -2,30 +2,9 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
+import ConfirmNotification from './components/ConfirmNotification'
 import personsService from './services/persons'
 
-const ConfirmNotification = ({ message }) => {
-
-  const confirmStyle = {
-    color: 'green',
-    background: 'lightgrey',
-    fontSize: 20,
-    borderStyle: 'solid',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10
-  }
-
-  if (message === null) {
-    return null
-  }
-
-  return (
-    <div style={confirmStyle}>
-      {message}
-    </div>
-  )
-}
 
 const App = () => {
   const [persons, setPersons] = useState([])
