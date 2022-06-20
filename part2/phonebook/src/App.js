@@ -64,7 +64,7 @@ const App = () => {
           resetAllFields()
         })
         .catch(error => {
-          setErrorMessage(error.message)
+          setErrorMessage(error.response.data)
             setTimeout(() => {          
             setErrorMessage(null)
           }, 5000)
