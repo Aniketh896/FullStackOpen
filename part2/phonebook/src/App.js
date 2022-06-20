@@ -63,6 +63,12 @@ const App = () => {
           }, 5000)       
           resetAllFields()
         })
+        .catch(error => {
+          setErrorMessage(error.message)
+            setTimeout(() => {          
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
   }
 
