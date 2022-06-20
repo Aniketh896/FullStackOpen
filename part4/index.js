@@ -1,8 +1,13 @@
+require('dotenv').config()
+// eslint-disable-next-line no-unused-vars
 const http = require('http')
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
+
+const mongoUrl = process.env.MONGODB_URI
+mongoose.connect(mongoUrl)
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -13,13 +18,10 @@ const blogSchema = new mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = 'mongodb://localhost/bloglist'
-mongoose.connect(mongoUrl)
-
 app.use(cors())
 app.use(express.json())
 
-app.get('/api/blogs', (request, response) => {
+app.get('/api/blogs', (_request, response) => {
   Blog
     .find({})
     .then(blogs => {
@@ -37,7 +39,7 @@ app.post('/api/blogs', (request, response) => {
     })
 })
 
-const PORT = 3003
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
