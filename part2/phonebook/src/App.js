@@ -42,7 +42,7 @@ const App = () => {
             setPersons(persons.map(person => person.id !== foundPerson.id ? person : returnedNote)) 
           })
           .catch(error => {      
-            setErrorMessage(`Information of ${newName} has already been emoved from the server`)
+            setErrorMessage(`Information of ${newName} has already been removed from the server`)
             setTimeout(() => {          
             setErrorMessage(null)
           }, 5000)
@@ -64,9 +64,10 @@ const App = () => {
           resetAllFields()
         })
         .catch(error => {
+          console.log(error.response.data)
           setErrorMessage(error.response.data)
-            setTimeout(() => {          
-            setErrorMessage(null)
+          setTimeout(() => {          
+          setErrorMessage(null)
           }, 5000)
         })
     }
