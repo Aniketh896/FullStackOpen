@@ -60,6 +60,23 @@ describe('blog_api testing', () => {
     )
   })
 
+  test('blog without likes will default to 0', async () => {
+    const newBlog = {
+      title: 'Jest Blog',
+      author: 'Jest Author',
+      url: 'https://www.jestauthor.com'
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
+  })
+
   test('unique identifier property is 0', async () => {
     const response = await api.get('/api/blogs')
 
