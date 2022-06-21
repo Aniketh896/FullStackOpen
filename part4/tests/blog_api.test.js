@@ -77,6 +77,34 @@ describe('blog_api testing', () => {
     expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
   })
 
+  test('blog without title', async () => {
+    const newBlog = {
+      author: 'Jest Author',
+      url: 'https://www.jestauthor.com',
+      likes: 10
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('blog without url', async () => {
+    const newBlog = {
+      title: 'Jest Blog',
+      author: 'Jest Author',
+      likes: 23
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+  })
+
   test('unique identifier property is 0', async () => {
     const response = await api.get('/api/blogs')
 
