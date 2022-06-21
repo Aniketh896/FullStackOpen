@@ -59,6 +59,13 @@ describe('blog_api testing', () => {
       'Jest Blog'
     )
   })
+
+  test('unique identifier property is 0', async () => {
+    const response = await api.get('/api/blogs')
+
+    const unique_id = response.body[0].id
+    expect(unique_id).toBeDefined()
+  })
 })
 
 afterAll(() => {
