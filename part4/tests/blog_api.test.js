@@ -77,7 +77,7 @@ describe('blog_api testing', () => {
     expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
   })
 
-  test('blog without title', async () => {
+  test('blog without title will send 400 Bad Request', async () => {
     const newBlog = {
       author: 'Jest Author',
       url: 'https://www.jestauthor.com',
@@ -88,10 +88,9 @@ describe('blog_api testing', () => {
       .post('/api/blogs')
       .send(newBlog)
       .expect(400)
-      .expect('Content-Type', /application\/json/)
   })
 
-  test('blog without url', async () => {
+  test('blog without url will send 400 Bad Request', async () => {
     const newBlog = {
       title: 'Jest Blog',
       author: 'Jest Author',
@@ -102,7 +101,6 @@ describe('blog_api testing', () => {
       .post('/api/blogs')
       .send(newBlog)
       .expect(400)
-      .expect('Content-Type', /application\/json/)
   })
 
   test('unique identifier property is 0', async () => {
