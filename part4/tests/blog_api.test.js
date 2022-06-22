@@ -12,9 +12,9 @@ beforeEach(async () => {
     let blogObject = new Blog(blog)
     await blogObject.save()
   }
-}, 100000)
+})
 
-describe('blog_api testing', () => {
+describe('when there is initially some blogs saved', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -36,8 +36,10 @@ describe('blog_api testing', () => {
       'Initial Author 2'
     )
   })
+})
 
-  test('a valid blog can be added', async () => {
+describe('addition of a new note', () => {
+  test('succeeds with valid data', async () => {
     const newBlog = {
       title: 'Jest Blog',
       author: 'Jest Author',
@@ -54,12 +56,40 @@ describe('blog_api testing', () => {
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-    const contents = blogsAtEnd.map(blog => blog.title)
-    expect(contents).toContainEqual(
+    const titles = blogsAtEnd.map(blog => blog.title)
+    expect(titles).toContainEqual(
       'Jest Blog'
     )
   })
 
+  test('fails with status code 400 if title is undefined', async () => {
+    const newBlog = {
+      author: 'Jest Author',
+      url: 'https://www.jestauthor.com',
+      likes: 10
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+
+  test('fails with status code 400 if url is undefined', async () => {
+    const newBlog = {
+      title: 'Jest Blog',
+      author: 'Jest Author',
+      likes: 23
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+})
+
+describe('viewing a specific blog', () => {
   test('blog without likes will default to 0', async () => {
     const newBlog = {
       title: 'Jest Blog',
@@ -77,37 +107,30 @@ describe('blog_api testing', () => {
     expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
   })
 
-  test('blog without title will send 400 Bad Request', async () => {
-    const newBlog = {
-      author: 'Jest Author',
-      url: 'https://www.jestauthor.com',
-      likes: 10
-    }
-
-    await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect(400)
-  })
-
-  test('blog without url will send 400 Bad Request', async () => {
-    const newBlog = {
-      title: 'Jest Blog',
-      author: 'Jest Author',
-      likes: 23
-    }
-
-    await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect(400)
-  })
-
   test('unique identifier property is 0', async () => {
     const response = await api.get('/api/blogs')
 
     const unique_id = response.body[0].id
     expect(unique_id).toBeDefined()
+  })
+})
+
+describe('deletion of a note', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogAtStart = await helper.blogsInDb()
+    const blogToDelete = blogAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(
+      helper.initialBlogs.length - 1
+    )
+
+    const titles = blogsAtEnd.map(res => res.title)
+    expect(titles).not.toContain(blogToDelete.title)
   })
 })
 
