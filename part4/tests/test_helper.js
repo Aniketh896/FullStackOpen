@@ -27,7 +27,12 @@ const blogsInDb = async () => {
 }
 
 const nonExistingId = async () => {
-  const blog = new Blog({ title: 'x', author: 'a', url: 'https://www.dummy.com', likes: 0 })
+  const blog = new Blog({
+    title: 'x',
+    author: 'a',
+    url: 'https://www.dummy.com',
+    likes: 0
+  })
   await blog.save()
   await blog.remove()
 
