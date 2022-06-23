@@ -5,7 +5,7 @@ const User = require('../models/user')
 usersRouter.post('/', async (request, response) => {
   const { username, name, password } = request.body
 
-  if (!username || !password) {
+  if (!(username && password)) {
     return response.status(400).json({
       // eslint-disable-next-line quotes
       error: `${!username ? 'username' : 'password'} must be provided`
