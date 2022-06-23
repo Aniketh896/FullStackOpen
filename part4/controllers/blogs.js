@@ -48,11 +48,32 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  const blogs = await Blog.findByIdAndRemove(request.params.id)
 
-  blogs
-    ? response.status(204).end()
-    : response.status(404).end()
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  const blogFound = await Blog.findById(request.params.id)
+
+  if (blogFound.user.toString() === decodedToken.id) {
+    const blogs = await Blog.findByIdAndRemove(request.params.id)
+
+    const blogAfterDeletion = user.blogs.filter((blog) => {
+      return blog.toString() !== request.params.id
+    })
+
+    user.blogs = blogAfterDeletion
+    await user.save()
+
+    blogs
+      ? response.status(204).end()
+      : response.status(404).end()
+  } else {
+    // eslint-disable-next-line quotes
+    return response.status(401).json({ error: `Invalid Action: this blog was not created by ${decodedToken.username}` })
+  }
 })
 
 blogsRouter.put('/:id', async (request, response) => {
