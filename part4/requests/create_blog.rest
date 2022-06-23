@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuaWtldGgiLCJpZCI6IjYyYjQyODRhYTViZGE3MWI3MGUwMTZlZiIsImlhdCI6MTY1NTk3NjY4MSwiZXhwIjoxNjU1OTgwMjgxfQ.-02HH8GoPl3gCCgdowlwZ7LQDe70JV_N8ewdSps6DeI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOiI2MmI0MzZkMTZhZmViNGYzZjQ1ZWE5ZDkiLCJpYXQiOjE2NTU5ODEzNjgsImV4cCI6MTY1NTk4NDk2OH0.kf3-1dgXeRseRB3U3hos0xzgohj83SpkHWYZP482Egs
 
 {
-  "title": "Test Title X",
-  "author": "Test User ani",
-  "url": "https://www.testurlx.com"
+  "title": "Test Title X1",
+  "author": "Test User sadsa",
+  "url": "https://www.testurldasd.com"
 }
