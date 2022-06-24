@@ -3,6 +3,30 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+const Notification = ({ notification }) => {
+
+  if (!notification.type){
+    return null
+  }
+
+  const notificationStyle = {
+    color: `${notification.type === 'created' ? 'green' : 'red'}`,
+    background: 'lightgrey',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+
+  return (
+    <div style={notificationStyle}>
+      {notification.message}
+    </div>
+  )
+
+}
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -11,6 +35,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setURL] = useState('')
+  const [notification, setNotification] = useState({})
 
 
   useEffect(() => {
@@ -41,7 +66,15 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (err) {
-      console.error(err.message)
+      setNotification({
+        message: `wrong username or password`,
+        type: 'error'
+      })
+      setTimeout(() => {          
+        setNotification(
+          {}
+        )
+      }, 5000) 
     }
   }
 
@@ -49,7 +82,14 @@ const App = () => {
     event.preventDefault()
     try {
       await blogService.create({ title, author, url })
-
+      setNotification({
+        message: `a new blog ${title} by ${author} added`,
+        type: 'created'
+      })
+      setTimeout(() => {
+        setNotification({})        
+      }, 5000) 
+      
       setTitle('')
       setAuthor('')
       setURL('')
@@ -67,6 +107,7 @@ const App = () => {
   const loginForm = () => (
     <div>
       <h1>log in to application</h1>
+      <Notification notification={notification}/>
       <form onSubmit={handleLogin}>
         username
         <input
@@ -88,9 +129,9 @@ const App = () => {
   const blogData = user => (
     <div>
       <h1>blogs</h1>
+      <Notification notification={notification}/>
       {user.name} logged in <input type='button' value='logout' onClick={handleLogout}/>
       <h1>create new</h1>
-      <p>
       <form onSubmit={handleBlogCreate}>
         title:<input
           type="text"
@@ -109,7 +150,6 @@ const App = () => {
           onChange={({ target }) => setURL(target.value)} /> <br />
         <button type="submit">create</button> <br />
       </form>
-      </p>
       <p>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
