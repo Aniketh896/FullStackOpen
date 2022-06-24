@@ -24,7 +24,6 @@ const Notification = ({ notification }) => {
       {notification.message}
     </div>
   )
-
 }
 
 const App = () => {
@@ -71,9 +70,7 @@ const App = () => {
         type: 'error'
       })
       setTimeout(() => {          
-        setNotification(
-          {}
-        )
+        setNotification({})
       }, 5000) 
     }
   }
