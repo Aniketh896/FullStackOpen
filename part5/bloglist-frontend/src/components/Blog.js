@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import blogService from '../services/blogs'
+
 
 const Blog = ({blog}) => {
   const [visible, setVisible] = useState(false)
@@ -8,6 +10,19 @@ const Blog = ({blog}) => {
 
   const toggleVisibility = () => {
     setVisible(!visible)
+  }
+
+  const increaseLikes = async () => {
+    //const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+
+    const updatedObject = {
+      // user: loggedUserJSON,
+      likes: blog.likes + 1,
+      // author: blog.author,
+      // title: blog.title,
+      // url: blog.url
+    }
+    await blogService.put(blog.id, updatedObject)
   }
 
   const blogStyle = {
@@ -28,7 +43,7 @@ const Blog = ({blog}) => {
         {blog.title} {blog.author}
         <input type="button" value='hide' onClick={toggleVisibility}/> <br/>
         {blog.url} <br/>
-        {blog.likes} <input type="button" value='like' onClick={() => null}/> <br/>
+        {blog.likes} <input type="button" value='like' onClick={increaseLikes}/> <br/>
         {blog.user ? blog.user.name : 'unknown'} <br/>
       </div>
     </div>
