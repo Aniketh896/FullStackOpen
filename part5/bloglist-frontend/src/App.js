@@ -133,7 +133,7 @@ const App = () => {
         <Togglable buttonLabel='new note'>
           <BlogForm handleBlogCreate={handleBlogCreate} title={title} author={author} url={url} 
             handleTitleChange={({ target }) => setTitle(target.value)} 
-            handleAuthorCHange={({ target }) => setAuthor(target.value)} 
+            handleAuthorChange={({ target }) => setAuthor(target.value)} 
             handleURLChange={({ target }) => setURL(target.value)}/>
         </Togglable>
         <p>
