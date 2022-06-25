@@ -137,7 +137,7 @@ const App = () => {
             handleURLChange={({ target }) => setURL(target.value)}/>
         </Togglable>
         <p>
-          {blogs.map(blog =>
+          {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
         </p>
