@@ -43,16 +43,16 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [blogs])
 
-  useEffect(() => {    
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')    
-    if (loggedUserJSON) {      
-      const user = JSON.parse(loggedUserJSON)      
-      setUser(user)      
-      blogService.setToken(user.token)    
-    }  
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
   }, [])
 
   const handleLogin = async event => {
@@ -60,8 +60,8 @@ const App = () => {
 
     try {
       const user = await loginService.login({ username, password })
-      window.localStorage.setItem(        
-        'loggedBlogappUser', JSON.stringify(user)      
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
       setUser(user)
@@ -69,12 +69,12 @@ const App = () => {
       setPassword('')
     } catch (err) {
       setNotification({
-        message: `wrong username or password`,
+        message: 'wrong username or password',
         type: 'error'
       })
-      setTimeout(() => {          
+      setTimeout(() => {
         setNotification({})
-      }, 5000) 
+      }, 5000)
     }
   }
 
@@ -88,9 +88,9 @@ const App = () => {
         type: 'created'
       })
       setTimeout(() => {
-        setNotification({})        
-      }, 5000) 
-      
+        setNotification({})
+      }, 5000)
+
       setTitle('')
       setAuthor('')
       setURL('')
@@ -128,30 +128,30 @@ const App = () => {
   )
 
   const blogData = user => (
-      <div>
-        <h1>blogs</h1>
-        <Notification notification={notification}/>
-        {user.name} logged in <input type='button' value='logout' onClick={handleLogout}/>
-        <Togglable buttonLabel='new note' ref={createFormRef}>
-          <BlogForm handleBlogCreate={handleBlogCreate} title={title} author={author} url={url} 
-            handleTitleChange={({ target }) => setTitle(target.value)} 
-            handleAuthorChange={({ target }) => setAuthor(target.value)} 
-            handleURLChange={({ target }) => setURL(target.value)}/>
-        </Togglable>
-        <p>
-          {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )}
-        </p>
-      </div>
+    <div>
+      <h1>blogs</h1>
+      <Notification notification={notification}/>
+      {user.name} logged in <input type='button' value='logout' onClick={handleLogout}/>
+      <Togglable buttonLabel='new note' ref={createFormRef}>
+        <BlogForm handleBlogCreate={handleBlogCreate} title={title} author={author} url={url}
+          handleTitleChange={({ target }) => setTitle(target.value)}
+          handleAuthorChange={({ target }) => setAuthor(target.value)}
+          handleURLChange={({ target }) => setURL(target.value)}/>
+      </Togglable>
+      <p>
+        {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+          <Blog key={blog.id} blog={blog} />
+        )}
+      </p>
+    </div>
   )
 
   return (
     <div>
       {user === null ?
-      loginForm() :
-      blogData(user)
-    }      
+        loginForm() :
+        blogData(user)
+      }
     </div>
   )
 }

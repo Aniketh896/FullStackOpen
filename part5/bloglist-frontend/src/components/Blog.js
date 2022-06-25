@@ -2,7 +2,7 @@ import { useState } from 'react'
 import blogService from '../services/blogs'
 
 
-const Blog = ({blog}) => {
+const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
@@ -12,7 +12,7 @@ const Blog = ({blog}) => {
     setVisible(!visible)
   }
 
-  const increaseLikes = async () => await blogService.put(blog.id, {...blog, likes: blog.likes + 1})
+  const increaseLikes = async () => await blogService.put(blog.id, { ...blog, likes: blog.likes + 1 })
   const deleteBlog = async () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       await blogService.deleteBlog(blog.id)
@@ -31,7 +31,7 @@ const Blog = ({blog}) => {
   return (
     <div style={blogStyle}>
       <div style={hideWhenVisible} >
-        {blog.title} {blog.author} 
+        {blog.title} {blog.author}
         <input type="button" value='view' onClick={toggleVisibility}/>
       </div>
       <div style={showWhenVisible} >
