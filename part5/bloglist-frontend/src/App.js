@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
@@ -38,6 +38,7 @@ const App = () => {
   const [url, setURL] = useState('')
   const [notification, setNotification] = useState({})
 
+  const createFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -80,6 +81,7 @@ const App = () => {
   const handleBlogCreate = async event => {
     event.preventDefault()
     try {
+      createFormRef.current.toggleVisibility()
       await blogService.create({ title, author, url })
       setNotification({
         message: `a new blog ${title} by ${author} added`,
@@ -130,7 +132,7 @@ const App = () => {
         <h1>blogs</h1>
         <Notification notification={notification}/>
         {user.name} logged in <input type='button' value='logout' onClick={handleLogout}/>
-        <Togglable buttonLabel='new note'>
+        <Togglable buttonLabel='new note' ref={createFormRef}>
           <BlogForm handleBlogCreate={handleBlogCreate} title={title} author={author} url={url} 
             handleTitleChange={({ target }) => setTitle(target.value)} 
             handleAuthorChange={({ target }) => setAuthor(target.value)} 
