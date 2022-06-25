@@ -30,5 +30,12 @@ const put = async (objectId, updatedObject) => {
   return response.data
 }
 
+const deleteBlog = async objectId => {
+  const config = {
+    headers: { 'Authorization': token}
+  }
+  await axios.delete(baseUrl+`/${objectId}`, config)
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, setToken, put }
+export default { getAll, create, setToken, put, deleteBlog }

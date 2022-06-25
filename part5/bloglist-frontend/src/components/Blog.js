@@ -12,18 +12,13 @@ const Blog = ({blog}) => {
     setVisible(!visible)
   }
 
-  const increaseLikes = async () => {
-    //const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-
-    const updatedObject = {
-      // user: loggedUserJSON,
-      likes: blog.likes + 1,
-      // author: blog.author,
-      // title: blog.title,
-      // url: blog.url
+  const increaseLikes = async () => await blogService.put(blog.id, {...blog, likes: blog.likes + 1})
+  const deleteBlog = async () => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      await blogService.deleteBlog(blog.id)
     }
-    await blogService.put(blog.id, updatedObject)
   }
+
 
   const blogStyle = {
     paddingTop: 10,
@@ -45,6 +40,7 @@ const Blog = ({blog}) => {
         {blog.url} <br/>
         {blog.likes} <input type="button" value='like' onClick={increaseLikes}/> <br/>
         {blog.user ? blog.user.name : 'unknown'} <br/>
+        <input type="button" value='remove' onClick={deleteBlog}/>
       </div>
     </div>
   )
