@@ -37,7 +37,7 @@ const Blog = ({ blog }) => {
         {blog.title} {blog.author}
         <input type="button" value='hide' onClick={toggleVisibility}/> <br/>
         {blog.url} <br/>
-        {blog.likes} <input type="button" value='like' onClick={increaseLikes}/> <br/>
+        {blog.likes ? blog.likes : '0'} <input type="button" value='like' onClick={increaseLikes}/> <br/>
         {blog.user ? blog.user.name : 'unknown'} <br/>
         <input type="button" value='remove' onClick={deleteBlog}/>
       </div>

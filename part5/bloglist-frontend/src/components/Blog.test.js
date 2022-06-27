@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
+import userEvent from '@testing-library/user-event'
 import { render, screen } from '@testing-library/react'
 import Blog from './Blog'
 
@@ -18,6 +19,7 @@ describe('Blog component', () => {
     expect(div).toHaveTextContent('testing')
     expect(div).toHaveTextContent('testing author')
     expect(div).not.toHaveTextContent('http://testingurl1.com/')
+    expect(div).not.toHaveStyle('display: none')
   })
 
   test('does not renders url and likes by default', () => {
@@ -30,6 +32,30 @@ describe('Blog component', () => {
     const { container } = render(<Blog blog={blog}/>)
     const div = container.querySelector('.blogNotRendered')
 
+    expect(div).toHaveStyle('display: none')
     expect(div).toHaveTextContent('http://testingurl1.com/')
+  })
+
+  test('renders url and likes after show is clicked', async () => {
+    const blog = {
+      title: 'testing 1',
+      author: 'testing author 1',
+      url: 'http://testingurl1.com/'
+    }
+
+    const mockHandler = jest.fn()
+
+    const { container } = render(
+      <Blog blog={blog} toggleVisibility={mockHandler} />
+    )
+
+    const div = container.querySelector('.blogNotRendered')
+    const user = userEvent.setup()
+    const button = screen.getByText('view')
+    await user.click(button)
+
+    expect(div).toHaveTextContent('http://testingurl1.com/')
+    expect(div).toHaveTextContent('0')
+    expect(div).not.toHaveStyle('display: none')
   })
 })
