@@ -19,7 +19,6 @@ const Blog = ({ blog }) => {
     }
   }
 
-
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -30,11 +29,11 @@ const Blog = ({ blog }) => {
 
   return (
     <div style={blogStyle}>
-      <div style={hideWhenVisible} >
+      <div style={hideWhenVisible} className='blogRendered'>
         {blog.title} {blog.author}
         <input type="button" value='view' onClick={toggleVisibility}/>
       </div>
-      <div style={showWhenVisible} >
+      <div style={showWhenVisible} className='blogNotRendered'>
         {blog.title} {blog.author}
         <input type="button" value='hide' onClick={toggleVisibility}/> <br/>
         {blog.url} <br/>
