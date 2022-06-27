@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event'
 import { render, screen } from '@testing-library/react'
 import Blog from './Blog'
-import BlogRef from '../App'
+import BlogForm from './BlogForm'
 
 describe('Blog component', () => {
   test('renders title and author by default', () => {
@@ -44,10 +44,8 @@ describe('Blog component', () => {
       url: 'http://testingurl1.com/'
     }
 
-    const mockHandler = jest.fn()
-
     const { container } = render(
-      <Blog blog={blog} toggleVisibility={mockHandler} />
+      <Blog blog={blog}/>
     )
 
     const div = container.querySelector('.blogNotRendered')
@@ -59,13 +57,8 @@ describe('Blog component', () => {
     expect(div).toHaveTextContent('0')
     expect(div).not.toHaveStyle('display: none')
   })
-  test('has mockHandler called twice when like button is pressed', async () => {
-    const blog = {
-      title: 'testing 1',
-      author: 'testing author 1',
-      url: 'http://testingurl1.com/'
-    }
 
+  test('has mockHandler called twice when like button is pressed', async () => {
     const mockHandler = jest.fn()
 
     render(
@@ -79,5 +72,33 @@ describe('Blog component', () => {
     await user.click(likeButton)
 
     expect(mockHandler.mock.calls).toHaveLength(2)
+  })
+})
+
+describe('<BlogForm/>', () => {
+  test('form testing', async () => {
+    const mockHandler = jest.fn()
+
+    const { container } = render(
+      <BlogForm createBlog={mockHandler}/>
+    )
+
+    const user = userEvent.setup()
+
+    const titleInput = screen.getByPlaceholderText('enter the Title...')
+    const authorInput = screen.getByPlaceholderText('enter the Author...')
+    const urlInput = screen.getByPlaceholderText('enter the URL...')
+
+    await user.type(titleInput, 'testing Title...' )
+    await user.type(authorInput, 'testing Author...' )
+    await user.type(urlInput, 'testing URL...' )
+
+    const createNote = screen.getByText('create')
+    await user.click(createNote)
+
+    expect(mockHandler.mock.calls).toHaveLength(1)
+    expect(mockHandler.mock.calls[0][0].title).toBe('testing Title...')
+    expect(mockHandler.mock.calls[0][0].author).toBe('testing Author...')
+    expect(mockHandler.mock.calls[0][0].url).toBe('testing URL...')
   })
 })
