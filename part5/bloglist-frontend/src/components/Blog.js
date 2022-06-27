@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useImperativeHandle } from 'react'
+import React from 'react'
 import blogService from '../services/blogs'
 
 
-const Blog = ({ blog }) => {
+const Blog = React.forwardRef(({ blog }, refs) => {
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
@@ -18,6 +19,12 @@ const Blog = ({ blog }) => {
       await blogService.deleteBlog(blog.id)
     }
   }
+
+  useImperativeHandle(refs, () => {
+    return {
+      increaseLikes
+    }
+  })
 
   const blogStyle = {
     paddingTop: 10,
@@ -43,6 +50,8 @@ const Blog = ({ blog }) => {
       </div>
     </div>
   )
-}
+})
+
+Blog.displayName = 'Blog'
 
 export default Blog

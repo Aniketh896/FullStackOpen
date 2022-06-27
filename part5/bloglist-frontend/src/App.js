@@ -39,6 +39,7 @@ const App = () => {
   const [notification, setNotification] = useState({})
 
   const createFormRef = useRef()
+  const BlogRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -140,7 +141,7 @@ const App = () => {
       </Togglable>
       <p>
         {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} ref={BlogRef}/>
         )}
       </p>
     </div>
