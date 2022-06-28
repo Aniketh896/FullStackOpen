@@ -45,20 +45,23 @@ const BlogForm = props => {
           name="title"
           value={title}
           placeholder="enter the Title..."
+          id='title-input'
           onChange={handleTitleChange} /> <br />
         author:<input
           type="text"
           name="author"
           value={author}
           placeholder="enter the Author..."
+          id='author-input'
           onChange={handleAuthorChange} /> <br />
         url:<input
           type="text"
           name="url"
           value={url}
           placeholder="enter the URL..."
+          id='url-input'
           onChange={handleURLChange} /> <br />
-        <button type="submit">create</button> <br />
+        <button type="submit" id='create-button'>create</button> <br />
       </form>
     </div>
   )
