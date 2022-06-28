@@ -56,7 +56,7 @@ describe('Blog app', function() {
         .and('contain', 'Cypress Author...')
     })
 
-    it.only('Users can like a blog', function() {
+    it('Users can like a blog', function() {
       cy.get('#new-note-button').click()
       cy.get('#title-input').type('Cypress Title...')
       cy.get('#author-input').type('Cypress Author...')
@@ -67,6 +67,67 @@ describe('Blog app', function() {
       cy.get('.blogNotRendered').contains('0')
       cy.get('#like-button').click()
       cy.get('.blogNotRendered').contains('1')
+    })
+  })
+
+  describe('The loggind in User', function () {
+    beforeEach(function() {
+      const newUpdatedUser = {
+        username: 'cypress_user_2',
+        name: 'Cypress User 2',
+        password: 'cypressuser2'
+      }
+      cy.request('POST', 'http://localhost:3003/api/users', newUpdatedUser)
+
+      cy.get('#username').type('cypress_user')
+      cy.get('#password').type('cypressuser')
+      cy.contains('login').click()
+
+    })
+    it('can delete a blog they created', function() {
+      cy.get('#new-note-button').click()
+      cy.get('#title-input').type('Cypress Title...')
+      cy.get('#author-input').type('Cypress Author...')
+      cy.get('#url-input').type('Cypress URL...')
+      cy.get('#create-button').click()
+
+      cy.get('#blogs').should('exist')
+      cy.get('#blogs').should('contain', 'Cypress Title...')
+
+      cy.get('#view-button').click()
+      cy.get('#remove-button').click()
+      cy.on('window:confirm', () => true)
+
+      cy.get('#blogs').should('not.exist')
+    })
+
+    it('cannot delete a blog they did not create', async function() {
+      cy.get('#new-note-button').click()
+      cy.get('#title-input').type('Cypress Title...')
+      cy.get('#author-input').type('Cypress Author...')
+      cy.get('#url-input').type('Cypress URL...')
+      cy.get('#create-button').click()
+
+      cy.get('#logout-button').click()
+
+      cy.get('#username').type('cypress_user_2')
+      cy.get('#password').type('cypressuser2')
+      cy.contains('login').click()
+
+      cy.get('#view-button').click()
+      cy.get('#remove-button').click()
+      cy.on('window:confirm', () => true)
+
+      cy.get('#blogs').should('contain', 'Cypress Title...')
+
+
+      // //cy.get('#blogs').should('exist')
+      // cy.get('#blogs').should('contain', 'Cypress Title...')
+
+      // cy.get('#view-button').click()
+      // cy.get('#remove-button').click()
+
+      // cy.get('#blogs').should('not.exist')
     })
   })
 })

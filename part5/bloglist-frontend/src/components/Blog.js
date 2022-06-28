@@ -35,7 +35,7 @@ const Blog = React.forwardRef(({ blog }, refs) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} id='blogs'>
       <div style={hideWhenVisible} className='blogRendered'>
         {blog.title} {blog.author}
         <input type="button" value='view' onClick={toggleVisibility} id='view-button'/>
@@ -46,7 +46,7 @@ const Blog = React.forwardRef(({ blog }, refs) => {
         {blog.url} <br/>
         {blog.likes ? blog.likes : '0'} <input type="button" value='like' onClick={increaseLikes} id='like-button'/> <br/>
         {blog.user ? blog.user.name : 'unknown'} <br/>
-        <input type="button" value='remove' onClick={deleteBlog}/>
+        <input type="button" value='remove' onClick={deleteBlog} id='remove-button'/>
       </div>
     </div>
   )
