@@ -70,6 +70,9 @@ const App = () => {
         message: 'wrong username or password',
         type: 'error'
       })
+      setUser(null)
+      setUsername('')
+      setPassword('')
       setTimeout(() => {
         setNotification({})
       }, 5000)

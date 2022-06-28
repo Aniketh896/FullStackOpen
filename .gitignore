@@ -1,4 +1,14 @@
 
 .DS_Store
+
+# Environment Variables are stored
 .env
+
+# Directory with Node Modules
 node_modules
+
+# Directory generated with test-coverage
+coverage
+
+# Cypress Videos Directory
+videos
