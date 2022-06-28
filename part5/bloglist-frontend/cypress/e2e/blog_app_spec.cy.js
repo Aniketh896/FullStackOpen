@@ -55,6 +55,19 @@ describe('Blog app', function() {
       cy.get('.blogRendered').should('contain', 'Cypress Title...')
         .and('contain', 'Cypress Author...')
     })
+
+    it.only('Users can like a blog', function() {
+      cy.get('#new-note-button').click()
+      cy.get('#title-input').type('Cypress Title...')
+      cy.get('#author-input').type('Cypress Author...')
+      cy.get('#url-input').type('Cypress URL...')
+      cy.get('#create-button').click()
+
+      cy.get('#view-button').click()
+      cy.get('.blogNotRendered').contains('0')
+      cy.get('#like-button').click()
+      cy.get('.blogNotRendered').contains('1')
+    })
   })
 })
 
