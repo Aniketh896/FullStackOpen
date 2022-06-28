@@ -68,6 +68,39 @@ describe('Blog app', function() {
       cy.get('#like-button').click()
       cy.get('.blogNotRendered').contains('1')
     })
+
+    it('Blogs are ordered according to the likes', function() {
+      cy.get('#new-note-button').click()
+      cy.get('#title-input').type('Title with second most likes')
+      cy.get('#author-input').type('Cypress Author...')
+      cy.get('#url-input').type('Cypress URL...')
+      cy.get('#create-button').click()
+
+      cy.get('#title-input').type('Title with least likes')
+      cy.get('#author-input').type('Cypress Author...')
+      cy.get('#url-input').type('Cypress URL...')
+      cy.get('#create-button').click()
+
+      cy.get('#title-input').type('Title with most likes')
+      cy.get('#author-input').type('Cypress Author...')
+      cy.get('#url-input').type('Cypress URL...')
+      cy.get('#create-button').click()
+
+      cy.get(':nth-child(1) > .blogRendered')
+        .get(':nth-child(1) > .blogRendered > #view-button').click()
+        .get(':nth-child(1) > .blogNotRendered > #like-button').click().wait(800).click().wait(800).click().wait(800)
+
+      cy.get(':nth-child(2) > .blogRendered')
+        .get(':nth-child(2) > .blogRendered > #view-button').click()
+        .get(':nth-child(2) > .blogNotRendered > #like-button').click().wait(800).click().wait(800)
+
+      cy.get(':nth-child(3) > .blogRendered')
+        .get(':nth-child(3) > .blogRendered > #view-button').click()
+        .get(':nth-child(3) > .blogNotRendered > #like-button').click().wait(800).click().wait(800).click().wait(800).click().wait(800)
+
+      cy.get(':nth-child(1) > .blogNotRendered').should('contain', 'Title with most likes')
+      cy.get(':nth-child(3) > .blogNotRendered').should('contain', 'Title with least likes')
+    })
   })
 
   describe('The loggind in User', function () {
@@ -119,15 +152,6 @@ describe('Blog app', function() {
       cy.on('window:confirm', () => true)
 
       cy.get('#blogs').should('contain', 'Cypress Title...')
-
-
-      // //cy.get('#blogs').should('exist')
-      // cy.get('#blogs').should('contain', 'Cypress Title...')
-
-      // cy.get('#view-button').click()
-      // cy.get('#remove-button').click()
-
-      // cy.get('#blogs').should('not.exist')
     })
   })
 })
