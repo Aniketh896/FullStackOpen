@@ -1,15 +1,19 @@
 // import { legacy_createStore as createStore } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
-import anecdoteReducer from './reducers/anecdoteReducer'
+import anecdoteService from './services/anecdotes'
+import anecdoteReducer, { setAnecdotes } from './reducers/anecdoteReducer'
 import notificationReducer from './reducers/notificationReducer'
 
 // export const store1 = createStore(anecdoteReducer)
 
-const store2 = configureStore({  
+anecdoteService.getAll().then(anecdotes =>
+  store.dispatch(setAnecdotes(anecdotes)))
+
+const store = configureStore({  
   reducer: {    
     anecdoteReducer: anecdoteReducer,
     notificationReducer: notificationReducer
   }
 })
 
-export default store2
+export default store
