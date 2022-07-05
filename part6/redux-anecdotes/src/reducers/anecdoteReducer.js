@@ -27,12 +27,12 @@ const reducer = (state = initialState, action) => {
     case 'INCREMENT': {
       const id = action.data.id
       const anecdoteToChange = state.find(n => n.id === id)
-      const changedAnecdote = { 
-        ...anecdoteToChange, 
+      const changedAnecdote = {
+        ...anecdoteToChange,
         votes : anecdoteToChange.votes + 1
       }
       return state.map(anecdote =>
-        anecdote.id !== id ? anecdote : changedAnecdote 
+        anecdote.id !== id ? anecdote : changedAnecdote
       )
      }
     case 'ADD_ANECDOTE':
