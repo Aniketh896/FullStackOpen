@@ -20,6 +20,7 @@ const AnecdoteList = () => {
                         has {anecdote.votes}
                         <button onClick={() => vote(anecdote.id)}>vote</button>
                     </div>
+                    <br />
                 </div>
             )}
         </div>
