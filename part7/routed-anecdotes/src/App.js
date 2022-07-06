@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 
 const Menu = () => {
   const padding = {
@@ -6,9 +7,29 @@ const Menu = () => {
   }
   return (
     <div>
-      <a href='#' style={padding}>anecdotes</a>
-      <a href='#' style={padding}>create new</a>
-      <a href='#' style={padding}>about</a>
+      <Link style={padding} to="/">anecdotes</Link>
+      <Link style={padding} to="/create">create new</Link>
+      <Link style={padding} to="/">about</Link>
+    </div>
+  )
+}
+
+const HomePage = ({ anecdotes }) => {
+  return (
+    <div>
+      <h1>Software anecdotes</h1>
+        <Menu />
+        <AnecdoteList anecdotes={anecdotes} />
+    </div>
+  )
+}
+
+const CreatePage = ({ addNew }) => {
+  return (
+    <div>
+      <h1>Software anecdotes</h1>
+        <Menu />
+        <CreateNew addNew={addNew} />
     </div>
   )
 }
@@ -80,7 +101,6 @@ const CreateNew = (props) => {
       </form>
     </div>
   )
-
 }
 
 const App = () => {
@@ -124,11 +144,12 @@ const App = () => {
 
   return (
     <div>
-      <h1>Software anecdotes</h1>
-      <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage anecdotes={anecdotes} />} />
+          <Route path="/create" element={<CreatePage addNew={addNew} />} />
+        </Routes>
+      </Router>
       <Footer />
     </div>
   )
